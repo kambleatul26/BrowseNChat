@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color='dark'>
+    <ion-title>
+      BY HASHTAGS
+    </ion-title>
+  </ion-toolbar>
+  <ion-toolbar class='ion-padding-top'>
+    <ion-searchbar placeholder="Text without #" [(ngModel)]='search' (ionChange)="getPosts($event)" [disabled]="continue"
+    showCancelButton="focus" debounce=1000></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" (click)="continue = false" *ngIf="continue">
+    <ion-fab-button color='dark'>
+      <ion-icon name="pause"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <h1 class="ion-text-center" *ngIf="continue && messages.length == 0">
+    <ion-spinner name="lines"></ion-spinner>
+  </h1>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      <ion-card *ngFor="let message of messages">
+        <ion-item>
+          <ion-avatar slot="start">
+            <img src="https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-message-chat-inbox-png-logo-26.png">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ message.name }}</h2>
+            <h3 *ngIf="message.loc">{{ message.loc }}</h3>
+          </ion-label>
+        </ion-item>
+        <ion-card-content>
+          {{ message.text }}
+        </ion-card-content>
+      </ion-card>
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
